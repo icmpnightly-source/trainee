@@ -1,0 +1,12 @@
+# Local services. The app itself runs with Node (see README).
+#   ./osrm/prepare.sh            once, to build the map data
+#   docker compose up -d osrm
+services:
+  osrm:
+    image: ${OSRM_IMAGE:-osrm/osrm-backend:latest}
+    command: osrm-routed --algorithm mld --max-matching-size 1000 /data/map.osrm
+    volumes:
+      - ./osrm/data:/data:ro
+    ports:
+      - "127.0.0.1:5000:5000"
+    restart: unless-stopped

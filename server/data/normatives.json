@@ -1,0 +1,1013 @@
+{
+  "title": "Namunaviy normativlar",
+  "note": "Bu jadval namuna sifatida berilgan. Topshiriladigan rasmiy normativ jadvalini kiriting (Normativlar sahifasida yoki shu faylda).",
+  "grades": {
+    "3": "Qoniqarli",
+    "4": "Yaxshi",
+    "5": "A'lo"
+  },
+  "passGrade": 3,
+  "exercises": [
+    {
+      "id": "pullup",
+      "name": "Turnikda tortilish",
+      "unit": "marta",
+      "better": "higher",
+      "tracking": "pose"
+    },
+    {
+      "id": "pushup",
+      "name": "Yerga tayanib qo'llarni bukib-yozish",
+      "unit": "marta",
+      "better": "higher",
+      "tracking": "manual"
+    },
+    {
+      "id": "situp",
+      "name": "Qorin pressi (1 daqiqa)",
+      "unit": "marta",
+      "better": "higher",
+      "tracking": "manual"
+    },
+    {
+      "id": "run_100m",
+      "name": "100 m yugurish",
+      "unit": "soniya",
+      "better": "lower",
+      "tracking": "manual",
+      "distance": 100
+    },
+    {
+      "id": "run_1km",
+      "name": "1 km yugurish",
+      "unit": "soniya",
+      "better": "lower",
+      "tracking": "gps",
+      "distance": 1000
+    },
+    {
+      "id": "run_3km",
+      "name": "3 km yugurish",
+      "unit": "soniya",
+      "better": "lower",
+      "tracking": "gps",
+      "distance": 3000
+    },
+    {
+      "id": "long_jump",
+      "name": "Joyidan uzunlikka sakrash",
+      "unit": "sm",
+      "better": "higher",
+      "tracking": "manual"
+    }
+  ],
+  "ageGroups": [
+    {
+      "id": "16-17",
+      "min": 16,
+      "max": 17
+    },
+    {
+      "id": "18-24",
+      "min": 18,
+      "max": 24
+    },
+    {
+      "id": "25-29",
+      "min": 25,
+      "max": 29
+    },
+    {
+      "id": "30-34",
+      "min": 30,
+      "max": 34
+    },
+    {
+      "id": "35-39",
+      "min": 35,
+      "max": 39
+    },
+    {
+      "id": "40-49",
+      "min": 40,
+      "max": 49
+    },
+    {
+      "id": "50+",
+      "min": 50,
+      "max": 120
+    }
+  ],
+  "standards": [
+    {
+      "exercise": "pullup",
+      "gender": "male",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 8,
+        "4": 11,
+        "5": 14
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "male",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 27,
+        "4": 34,
+        "5": 41
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "male",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 34,
+        "4": 40,
+        "5": 45
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "male",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 15.9,
+        "4": 15.1,
+        "5": 14.4
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "male",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 255,
+        "4": 240,
+        "5": 225
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "male",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 920,
+        "4": 860,
+        "5": 795
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "male",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 202,
+        "4": 216,
+        "5": 230
+      }
+    },
+    {
+      "exercise": "pullup",
+      "gender": "male",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 9,
+        "4": 12,
+        "5": 15
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "male",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 30,
+        "4": 38,
+        "5": 45
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "male",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 38,
+        "4": 44,
+        "5": 50
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "male",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 15,
+        "4": 14.2,
+        "5": 13.6
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "male",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 240,
+        "4": 225,
+        "5": 210
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "male",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 870,
+        "4": 810,
+        "5": 750
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "male",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 210,
+        "4": 225,
+        "5": 240
+      }
+    },
+    {
+      "exercise": "pullup",
+      "gender": "male",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 9,
+        "4": 12,
+        "5": 14
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "male",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 29,
+        "4": 36,
+        "5": 43
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "male",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 36,
+        "4": 42,
+        "5": 48
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "male",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 15.4,
+        "4": 14.5,
+        "5": 13.9
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "male",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 245,
+        "4": 230,
+        "5": 215
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "male",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 890,
+        "4": 830,
+        "5": 770
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "male",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 207,
+        "4": 221,
+        "5": 236
+      }
+    },
+    {
+      "exercise": "pullup",
+      "gender": "male",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 8,
+        "4": 11,
+        "5": 13
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "male",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 26,
+        "4": 33,
+        "5": 40
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "male",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 33,
+        "4": 39,
+        "5": 44
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "male",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 16.1,
+        "4": 15.2,
+        "5": 14.6
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "male",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 255,
+        "4": 240,
+        "5": 225
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "male",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 935,
+        "4": 870,
+        "5": 805
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "male",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 200,
+        "4": 214,
+        "5": 228
+      }
+    },
+    {
+      "exercise": "pullup",
+      "gender": "male",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 7,
+        "4": 10,
+        "5": 12
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "male",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 24,
+        "4": 30,
+        "5": 36
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "male",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 30,
+        "4": 35,
+        "5": 40
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "male",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 16.8,
+        "4": 15.9,
+        "5": 15.2
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "male",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 270,
+        "4": 250,
+        "5": 235
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "male",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 975,
+        "4": 905,
+        "5": 840
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "male",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 193,
+        "4": 207,
+        "5": 221
+      }
+    },
+    {
+      "exercise": "pullup",
+      "gender": "male",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 6,
+        "4": 8,
+        "5": 11
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "male",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 21,
+        "4": 27,
+        "5": 31
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "male",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 27,
+        "4": 31,
+        "5": 35
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "male",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 17.7,
+        "4": 16.8,
+        "5": 16
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "male",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 285,
+        "4": 265,
+        "5": 250
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "male",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 1025,
+        "4": 955,
+        "5": 885
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "male",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 185,
+        "4": 198,
+        "5": 211
+      }
+    },
+    {
+      "exercise": "pullup",
+      "gender": "male",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 5,
+        "4": 7,
+        "5": 9
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "male",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 17,
+        "4": 22,
+        "5": 26
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "male",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 22,
+        "4": 26,
+        "5": 29
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "male",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 18.8,
+        "4": 17.8,
+        "5": 17
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "male",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 300,
+        "4": 280,
+        "5": 265
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "male",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 1090,
+        "4": 1015,
+        "5": 940
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "male",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 175,
+        "4": 187,
+        "5": 200
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "female",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 9,
+        "4": 14,
+        "5": 18
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "female",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 27,
+        "4": 32,
+        "5": 38
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "female",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 18.9,
+        "4": 17.8,
+        "5": 17
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "female",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 320,
+        "4": 295,
+        "5": 275
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "female",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 1115,
+        "4": 1050,
+        "5": 985
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "female",
+      "ageGroup": "16-17",
+      "grades": {
+        "3": 158,
+        "4": 171,
+        "5": 182
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "female",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 10,
+        "4": 15,
+        "5": 20
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "female",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 30,
+        "4": 36,
+        "5": 42
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "female",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 17.8,
+        "4": 16.8,
+        "5": 16
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "female",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 300,
+        "4": 280,
+        "5": 260
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "female",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 1050,
+        "4": 990,
+        "5": 930
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "female",
+      "ageGroup": "18-24",
+      "grades": {
+        "3": 165,
+        "4": 178,
+        "5": 190
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "female",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 10,
+        "4": 14,
+        "5": 19
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "female",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 29,
+        "4": 35,
+        "5": 40
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "female",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 18.2,
+        "4": 17.2,
+        "5": 16.4
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "female",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 305,
+        "4": 285,
+        "5": 265
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "female",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 1075,
+        "4": 1015,
+        "5": 950
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "female",
+      "ageGroup": "25-29",
+      "grades": {
+        "3": 162,
+        "4": 175,
+        "5": 187
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "female",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 9,
+        "4": 13,
+        "5": 18
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "female",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 26,
+        "4": 32,
+        "5": 37
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "female",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 19.1,
+        "4": 18,
+        "5": 17.2
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "female",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 320,
+        "4": 300,
+        "5": 280
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "female",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 1125,
+        "4": 1060,
+        "5": 995
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "female",
+      "ageGroup": "30-34",
+      "grades": {
+        "3": 157,
+        "4": 169,
+        "5": 181
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "female",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 8,
+        "4": 12,
+        "5": 16
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "female",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 24,
+        "4": 29,
+        "5": 34
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "female",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 19.9,
+        "4": 18.8,
+        "5": 17.9
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "female",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 335,
+        "4": 315,
+        "5": 290
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "female",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 1175,
+        "4": 1110,
+        "5": 1040
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "female",
+      "ageGroup": "35-39",
+      "grades": {
+        "3": 152,
+        "4": 164,
+        "5": 175
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "female",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 7,
+        "4": 11,
+        "5": 14
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "female",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 21,
+        "4": 25,
+        "5": 29
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "female",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 21,
+        "4": 19.8,
+        "5": 18.9
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "female",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 355,
+        "4": 330,
+        "5": 305
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "female",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 1240,
+        "4": 1170,
+        "5": 1095
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "female",
+      "ageGroup": "40-49",
+      "grades": {
+        "3": 145,
+        "4": 157,
+        "5": 167
+      }
+    },
+    {
+      "exercise": "pushup",
+      "gender": "female",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 6,
+        "4": 9,
+        "5": 12
+      }
+    },
+    {
+      "exercise": "situp",
+      "gender": "female",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 17,
+        "4": 21,
+        "5": 24
+      }
+    },
+    {
+      "exercise": "run_100m",
+      "gender": "female",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 22.3,
+        "4": 21,
+        "5": 20
+      }
+    },
+    {
+      "exercise": "run_1km",
+      "gender": "female",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 375,
+        "4": 350,
+        "5": 325
+      }
+    },
+    {
+      "exercise": "run_3km",
+      "gender": "female",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 1315,
+        "4": 1240,
+        "5": 1165
+      }
+    },
+    {
+      "exercise": "long_jump",
+      "gender": "female",
+      "ageGroup": "50+",
+      "grades": {
+        "3": 137,
+        "4": 148,
+        "5": 158
+      }
+    }
+  ]
+}

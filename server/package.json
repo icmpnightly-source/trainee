@@ -1,0 +1,15 @@
+{
+  "name": "trainee-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Normativ topshirishga tayyorlash: API, AI murabbiy, OSRM bilan yugurish tahlili",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --no-warnings=ExperimentalWarning src/index.mjs",
+    "dev": "node --no-warnings=ExperimentalWarning --watch src/index.mjs",
+    "test": "node --no-warnings=ExperimentalWarning --test \"test/*.test.mjs\""
+  }
+}

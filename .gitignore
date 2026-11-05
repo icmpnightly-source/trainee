@@ -1,0 +1,24 @@
+node_modules/
+web/dist/
+*.tsbuildinfo
+
+# Secrets: the API key lives only in server/.env
+.env
+.env.*
+!.env.example
+
+# Runtime data (database, edited normatives, certificates)
+server/var/
+
+# Downloaded at install time (scripts/fetch-models.mjs)
+web/public/models/
+web/public/mediapipe/
+
+# OSRM map data (osrm/prepare.sh)
+osrm/data/
+
+*.log
+.DS_Store
+.vscode/
+.idea/
+.claude/

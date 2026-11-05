@@ -1,0 +1,15 @@
+{
+  "name": "trainee",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Normativ topshirishga tayyorgarlik: AI murabbiy, turnik hisoblagichi, GPS yugurish (lokal OSRM)",
+  "scripts": {
+    "setup": "npm --prefix web install && npm --prefix web run models",
+    "build": "npm --prefix web run build",
+    "start": "npm --prefix server start",
+    "dev:server": "npm --prefix server run dev",
+    "dev:web": "npm --prefix web run dev",
+    "test": "npm --prefix server test && npm --prefix web test"
+  }
+}
