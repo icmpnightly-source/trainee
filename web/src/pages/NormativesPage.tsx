@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { del, type Gender, type Normatives, put } from "../api";
 import { formatValue, parseTime } from "../format";
 import { useApi } from "../hooks";
+import { isNative } from "../platform";
 
 export function NormativesPage() {
   const { data, error, setData } = useApi<Normatives>("/api/normatives");
@@ -142,7 +143,7 @@ export function NormativesPage() {
         <button className="primary" disabled={!dirty} onClick={save}>
           Saqlash
         </button>
-        <button onClick={download}>JSON yuklab olish</button>
+        {!isNative && <button onClick={download}>JSON yuklab olish</button>}
         <label className="button">
           JSON yuklash
           <input type="file" accept="application/json" hidden onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />

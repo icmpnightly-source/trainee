@@ -22,3 +22,9 @@ osrm/data/
 .vscode/
 .idea/
 .claude/
+
+# Android build outputs (the project itself, web/android, is committed)
+dist-apk/
+web/android/app/build/
+web/android/build/
+web/android/.gradle/

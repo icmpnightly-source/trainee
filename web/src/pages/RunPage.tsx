@@ -4,7 +4,8 @@ import { type Athlete, type MapConfig, type Normatives, post, type RunAnalysis }
 import { RunMap } from "../components/RunMap";
 import { formatDuration, formatKm, formatPace } from "../format";
 import { useApi } from "../hooks";
-import { type Fix, keepScreenOn, RunTracker, simulateFixes, watchGps } from "../run/tracker";
+import { isNative, keepScreenOn } from "../platform";
+import { type Fix, RunTracker, simulateFixes, watchGps } from "../run/tracker";
 
 type Phase = "ready" | "running" | "finished";
 
@@ -115,7 +116,8 @@ export function RunPage() {
 
   async function startReal() {
     if (!here) return;
-    releaseLock.current = await keepScreenOn();
+    // The app records with the screen off; a browser page needs the screen on.
+    if (!isNative) releaseLock.current = await keepScreenOn();
     begin(false, { ...here, t: Date.now() });
   }
 

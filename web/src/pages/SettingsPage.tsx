@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { get, type Health, put } from "../api";
+import { getServerUrl, isNative } from "../platform";
 import { useApi } from "../hooks";
 
 export function SettingsPage() {
@@ -30,6 +32,14 @@ export function SettingsPage() {
   return (
     <section>
       <h1>Sozlamalar va holat</h1>
+      {isNative && (
+        <div className="card">
+          <h2>Server</h2>
+          <p className="small">
+            <code>{getServerUrl() || "kiritilmagan"}</code> · <Link to="/server">o'zgartirish</Link>
+          </p>
+        </div>
+      )}
       {health.error && <p className="error">{health.error}</p>}
       {h && (
         <>

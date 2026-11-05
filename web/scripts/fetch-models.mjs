@@ -16,8 +16,11 @@ if (!fs.existsSync(wasmSrc)) {
   console.error("node_modules/@mediapipe/tasks-vision topilmadi: avval `npm install` qiling");
   process.exit(1);
 }
+// Only the classic build that FilesetResolver.forVisionTasks() loads by default
+// (the *_module_* copy would add another 15 MB to the Android app).
+fs.rmSync(wasmDst, { recursive: true, force: true });
 fs.mkdirSync(wasmDst, { recursive: true });
-for (const f of fs.readdirSync(wasmSrc)) fs.copyFileSync(path.join(wasmSrc, f), path.join(wasmDst, f));
+for (const f of fs.readdirSync(wasmSrc).filter((f) => f.startsWith("vision_wasm_internal."))) fs.copyFileSync(path.join(wasmSrc, f), path.join(wasmDst, f));
 
 fs.mkdirSync(modelDir, { recursive: true });
 const wanted = (process.env.POSE_MODELS ?? "lite,full").split(",").map((s) => s.trim()).filter(Boolean);

@@ -1,6 +1,9 @@
 // Live run tracking on the phone: GPS fixes in, distance and pace out, and
 // the exact moment the target distance was crossed.
+import type { BackgroundGeolocationPlugin } from "@capacitor-community/background-geolocation";
+import { registerPlugin } from "@capacitor/core";
 import { acceptFix, destination, haversine } from "../../../shared/geo.js";
+import { isNative } from "../platform";
 
 export interface Fix {
   lat: number;
@@ -120,8 +123,15 @@ export class RunTracker {
   }
 }
 
-/** Watches the phone's GPS. Returns a function that stops watching. */
+/**
+ * Watches the phone's GPS. Returns a function that stops watching.
+ *
+ * In the Android app this is the native location service with a notification,
+ * so the run keeps recording with the screen off or another app open; in the
+ * browser it is the Geolocation API (keep the page open and the screen on).
+ */
 export function watchGps(onFix: (f: Fix) => void, onError: (message: string) => void) {
+  if (isNative) return watchNative(onFix, onError);
   if (!("geolocation" in navigator)) {
     onError("Bu brauzerda GPS yo'q");
     return () => {};
@@ -139,6 +149,41 @@ export function watchGps(onFix: (f: Fix) => void, onError: (message: string) => 
     { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 },
   );
   return () => navigator.geolocation.clearWatch(id);
+}
+
+const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>("BackgroundGeolocation");
+
+function watchNative(onFix: (f: Fix) => void, onError: (message: string) => void) {
+  let id: string | null = null;
+  let stopped = false;
+  BackgroundGeolocation.addWatcher(
+    {
+      backgroundTitle: "NormativAI: yugurish",
+      backgroundMessage: "GPS yozilmoqda. To'xtatish uchun ilovada To'xtatish ni bosing.",
+      requestPermissions: true,
+      stale: false,
+      distanceFilter: 0,
+    },
+    (location, error) => {
+      if (error) {
+        if (error.code === "NOT_AUTHORIZED") {
+          onError("Joylashuvga ruxsat berilmadi. Telefon sozlamalarida NormativAI ga joylashuv ruxsatini bering.");
+          if (window.confirm("Ilovaga joylashuv ruxsati kerak. Sozlamalarni ochaymi?")) void BackgroundGeolocation.openSettings();
+        } else {
+          onError(error.message);
+        }
+        return;
+      }
+      if (location) onFix({ lat: location.latitude, lon: location.longitude, t: location.time ?? Date.now(), acc: location.accuracy ?? null });
+    },
+  ).then((watcherId) => {
+    id = watcherId;
+    if (stopped) void BackgroundGeolocation.removeWatcher({ id });
+  }, (e: Error) => onError(e.message));
+  return () => {
+    stopped = true;
+    if (id) void BackgroundGeolocation.removeWatcher({ id });
+  };
 }
 
 /**
@@ -163,15 +208,4 @@ export function simulateFixes(coords: [number, number][], speed: number, t0: num
     carry = d - seg;
   }
   return out;
-}
-
-/** Keeps the screen on while running (where the browser allows it). */
-export async function keepScreenOn(): Promise<() => void> {
-  try {
-    const nav = navigator as Navigator & { wakeLock?: { request(type: "screen"): Promise<{ release(): Promise<void> }> } };
-    const lock = await nav.wakeLock?.request("screen");
-    return () => void lock?.release();
-  } catch {
-    return () => {};
-  }
 }

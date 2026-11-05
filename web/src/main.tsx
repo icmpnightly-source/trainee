@@ -1,17 +1,22 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { AthletePage } from "./pages/AthletePage";
 import { AthletesPage } from "./pages/AthletesPage";
 import { NormativesPage } from "./pages/NormativesPage";
 import { PlanPage } from "./pages/PlanPage";
 import { PullupPage } from "./pages/PullupPage";
 import { RunPage } from "./pages/RunPage";
+import { ServerPage } from "./pages/ServerPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { TrackPage } from "./pages/TrackPage";
+import { getServerUrl, isNative } from "./platform";
 import "./styles.css";
 
 function App() {
+  const location = useLocation();
+  // The Android app needs to know its server first (the pull-up counter works without one).
+  if (isNative && !getServerUrl() && !["/server", "/pullup"].includes(location.pathname)) return <Navigate to="/server" replace />;
   return (
     <>
       <header className="top">
@@ -38,6 +43,7 @@ function App() {
           <Route path="/run" element={<RunPage />} />
           <Route path="/normatives" element={<NormativesPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/server" element={<ServerPage />} />
           <Route path="*" element={<p className="muted">Sahifa topilmadi</p>} />
         </Routes>
       </main>

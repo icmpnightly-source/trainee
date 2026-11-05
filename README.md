@@ -1,16 +1,16 @@
 # NormativAI — normativ topshirishga tayyorgarlik
 
-Sportchini jismoniy normativlarga tayyorlash uchun ilova:
+Sportchini jismoniy normativlarga tayyorlash uchun **Android ilova** (va xuddi shu ilovaning brauzer versiyasi):
 
 - **Sportchi profili va normativlar.** Yoshi, jinsi, bo'yi, vazni, maqsad bahosi va topshirish sanasi; yosh guruhi avtomatik aniqlanadi. Har bir mashq bo'yicha oxirgi natija, baho (5/4/3) va maqsadgacha qolgan farq ko'rsatiladi.
 - **AI murabbiy (DeepSeek).** Sportchining hozirgi holati, yosh guruhining normativi va natijalardagi farqdan kelib chiqib, haftama-hafta mashg'ulot rejasini, oraliq maqsadlarni, ovqatlanish va tiklanish tavsiyalarini tuzadi. Murabbiyga erkin savol berish ham mumkin. AI ishlamasa, ilova qoidalarga asoslangan rejani beradi va buni ochiq aytadi.
 - **Turnikda tortilish — AI hisoblagich.** Telefon yoki noutbuk kamerasi orqali takrorlarni sanaydi: to'liq osilishdan boshlanib, iyak turnikdan oshib, yana to'liq tushgan takrorgina hisoblanadi. Model (MediaPipe Pose Landmarker) brauzerning o'zida, shu serverdan olingan fayllar bilan ishlaydi; video hech qayerga yuborilmaydi.
 - **Yugurish — GPS treking va lokal OSRM.** Telefon GPS'i bilan yugurishni yozadi, masofani lokal OSRM'da xaritaga moslab (map matching) tekshiradi, normativ masofani bosib o'tgan vaqtni hisoblaydi. Shu yerdan boshlanib shu yerda tugaydigan kerakli uzunlikdagi marshrutni ham tuzib beradi.
 
-Hammasi lokal ishlaydi: server, ma'lumotlar bazasi (SQLite), pose-model va OSRM shu kompyuterda. Tashqariga faqat AI so'rovi chiqadi (DeepSeek) — uni ham lokal model (Ollama va h.k.) bilan almashtirish mumkin.
+Hammasi lokal ishlaydi: pose-model telefonning o'zida (ilova ichida), server, ma'lumotlar bazasi (SQLite) va OSRM lokal tarmoqdagi kompyuterda. Tashqariga faqat AI so'rovi chiqadi (DeepSeek) — uni ham lokal model (Ollama va h.k.) bilan almashtirish mumkin.
 
 ```
- Telefon / brauzer (React, PWA)            Server (Node.js, server/)                 Lokal xizmatlar
+ Android ilova / brauzer (React)           Server (Node.js, server/)                 Lokal xizmatlar
  ┌───────────────────────────────┐        ┌─────────────────────────────────┐      ┌──────────────────────┐
  │ Turnik: kamera → MediaPipe    │        │ /api  sportchilar, natijalar    │      │ OSRM (docker)        │
  │   (model: /models/*.task)     │──────▶ │       normativlar, baholash     │────▶ │  match / route       │
@@ -20,7 +20,38 @@ Hammasi lokal ishlaydi: server, ma'lumotlar bazasi (SQLite), pose-model va OSRM 
                                           └─────────────────────────────────┘      └──────────────────────┘
 ```
 
-## Tez boshlash
+## Android ilova
+
+Ilova `web/` dagi React ilovaning o'zi, [Capacitor](https://capacitorjs.com) bilan Android'ga o'ralgan (`web/android/`):
+
+- pose-model va MediaPipe fayllari APK ichida — turnik hisoblagichi internetsiz va serversiz ishlaydi;
+- GPS — Android'ning joylashuv xizmati orqali: yugurish ekran o'chiq yoki boshqa ilova ochiq bo'lsa ham yoziladi (bildirishnoma ko'rinib turadi);
+- kamera ishlayotganda ekran o'chmaydi;
+- serverga Android'ning o'z HTTP klienti bilan ulanadi, shuning uchun lokal tarmoqdagi oddiy `http://` server yetarli (HTTPS sertifikat kerak emas).
+
+### APK olish
+
+Har bir push'da GitHub Actions APK'ni yig'adi (**Actions → Android APK →** oxirgi ishga tushirish **→ Artifacts → NormativAI-…-apk**). Release sifatida chiqarish uchun: **Actions → Android APK → Run workflow**, "release" belgisini qo'ying — APK **Releases** bo'limida paydo bo'ladi.
+
+Telefonga o'rnatish: APK faylini oching, "Noma'lum manbalardan o'rnatish"ga ruxsat bering. Bu debug imzoli APK — o'z qurilmalaringizga o'rnatish uchun; Google Play uchun release imzosi kerak bo'ladi.
+
+O'zingiz yig'ish (Android Studio yoki Android SDK + JDK 21 kerak):
+
+```bash
+npm run apk
+```
+
+APK: `web/android/app/build/outputs/apk/debug/app-debug.apk`. Android Studio'da ochish: `cd web && npx cap open android`.
+
+### Birinchi ishga tushirish
+
+1. Kompyuterda serverni ishga tushiring (quyida), telefon va kompyuter bitta Wi-Fi tarmog'ida bo'lsin.
+2. Ilova server manzilini so'raydi: kompyuterning lokal IP manzili va port, masalan `192.168.1.20:8080`. Ilova ulanishni tekshirib, AI va OSRM holatini ko'rsatadi.
+3. Kamera va joylashuv ruxsatlari kerakli sahifa birinchi ochilganda so'raladi.
+
+Manzilni keyin **Sozlamalar → Server** da o'zgartirish mumkin.
+
+## Server: tez boshlash
 
 Kerak: **Node.js 22.13+** (SQLite Node'ning o'zida), **Docker** (OSRM uchun).
 
@@ -54,11 +85,11 @@ npm run build
 npm start
 ```
 
-So'ng brauzerda: <http://localhost:8080>. **Sozlamalar** sahifasida AI va OSRM holatini ko'rasiz.
+Server `0.0.0.0:8080` da tinglaydi: Android ilova shu manzilga ulanadi, brauzer versiyasi esa <http://localhost:8080> da ochiladi. **Sozlamalar** sahifasida AI va OSRM holatini ko'rasiz. Kompyuter firewall'i 8080-portga lokal tarmoqdan kirishga ruxsat berishi kerak.
 
-### Telefondan foydalanish (HTTPS)
+### Brauzer versiyasini telefonda ochish (HTTPS)
 
-Brauzerlar kamera va GPS'ni faqat HTTPS (yoki `localhost`) sahifalarga beradi. Lokal tarmoq uchun o'z sertifikatingizni yarating (IP — serverning lokal manzili):
+Android ilova uchun bu kerak emas. Brauzerlar esa kamera va GPS'ni faqat HTTPS (yoki `localhost`) sahifalarga beradi. Lokal tarmoq uchun o'z sertifikatingizni yarating (IP — serverning lokal manzili):
 
 ```bash
 ./scripts/make-cert.sh 192.168.1.20
@@ -153,6 +184,9 @@ Marshrut va tahlil OSRM bilan to'liq lokal. Xarita **foni** (tile) standart hola
 | `web/src/pose/` | Turnik hisoblagichi va model yuklash |
 | `web/src/run/tracker.ts` | Jonli GPS treker |
 | `web/src/pages/` | Sahifalar |
+| `web/src/platform.ts` | Android ilova va brauzer farqlari (server manzili, ekranni yoqiq tutish) |
+| `web/android/`, `web/capacitor.config.ts` | Android loyiha (Capacitor) |
+| `.github/workflows/android.yml` | APK yig'ish |
 | `osrm/prepare.sh`, `docker-compose.yml` | Lokal OSRM |
 
 ## Testlar

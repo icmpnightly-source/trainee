@@ -1,0 +1,71 @@
+# Builds the Android app (APK) from web/ with Capacitor.
+# Every push that touches the app uploads the APK as a build artifact;
+# running it by hand with "release" ticked also publishes a GitHub release.
+name: Android APK
+
+on:
+  push:
+    paths:
+      - "web/**"
+      - "shared/**"
+      - ".github/workflows/android.yml"
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "APK'ni GitHub Release sifatida ham chiqarish"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    env:
+      VERSION_CODE: ${{ github.run_number }}
+      VERSION_NAME: 0.1.${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Web app (with the pose model) into the Android project
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+          npx cap sync android
+
+      - name: Build the APK
+        working-directory: web/android
+        run: |
+          ./gradlew assembleDebug --no-daemon --stacktrace
+          mkdir -p ../../dist-apk
+          cp app/build/outputs/apk/debug/app-debug.apk "../../dist-apk/NormativAI-${VERSION_NAME}.apk"
+          ls -la ../../dist-apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NormativAI-${{ env.VERSION_NAME }}-apk
+          path: dist-apk/*.apk
+          if-no-files-found: error
+
+      - name: GitHub release
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.release }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "android-v${VERSION_NAME}" dist-apk/*.apk \
+            --target "${GITHUB_SHA}" \
+            --title "NormativAI Android ${VERSION_NAME}" \
+            --notes "Android ilova (debug imzoli APK). Telefonga o'rnatish: faylni yuklab oching, 'Noma'lum manbalardan o'rnatish'ga ruxsat bering."

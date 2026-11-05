@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { DrawingUtils } from "@mediapipe/tasks-vision";
 import { type Athlete, post } from "../api";
 import { useApi } from "../hooks";
+import { keepScreenOn } from "../platform";
 import { loadLandmarker, type ModelKind, PoseLandmarker } from "../pose/landmarker";
 import { PullupCounter, type PullupState } from "../pose/pullup";
 
@@ -37,6 +38,7 @@ export function PullupPage() {
   const startedAt = useRef<number>(0);
   const lastValid = useRef(0);
   const lastInvalid = useRef(0);
+  const releaseScreen = useRef<() => void>(() => {});
 
   const [source, setSource] = useState<Source>("camera");
   const [facing, setFacing] = useState<"user" | "environment">("environment");
@@ -59,6 +61,8 @@ export function PullupPage() {
     stream.current?.getTracks().forEach((t) => t.stop());
     stream.current = null;
     video.current?.pause();
+    releaseScreen.current();
+    releaseScreen.current = () => {};
     setRunning(false);
   }
 
@@ -88,6 +92,7 @@ export function PullupPage() {
       lastInvalid.current = 0;
       setState(counter.current.state);
       startedAt.current = performance.now();
+      releaseScreen.current = await keepScreenOn();
       setRunning(true);
       run(landmarker);
     } catch (e) {

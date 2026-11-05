@@ -1,3 +1,6 @@
+import { CapacitorHttp, type HttpResponse } from "@capacitor/core";
+import { getServerUrl, isNative } from "./platform";
+
 export type Gender = "male" | "female";
 
 export interface Athlete {
@@ -154,19 +157,48 @@ export class ApiError extends Error {
   }
 }
 
-export async function api<T>(method: string, url: string, body?: unknown): Promise<T> {
-  const res = await fetch(url, {
+function parseBody(text: unknown): unknown {
+  if (typeof text !== "string") return text;
+  try {
+    return text ? JSON.parse(text) : null;
+  } catch {
+    return text;
+  }
+}
+
+/**
+ * Calls the server's API. In the Android app the request goes through the
+ * native HTTP client to the server set on first start (no CORS, plain http on
+ * the local network allowed); in the browser it is a same-origin fetch.
+ */
+export async function api<T>(method: string, url: string, body?: unknown, server = getServerUrl()): Promise<T> {
+  if (isNative) {
+    if (!server) throw new ApiError(0, "Server manzili kiritilmagan (Sozlamalar → Server)");
+    let res: HttpResponse;
+    try {
+      res = await CapacitorHttp.request({
+        url: server + url,
+        method,
+        headers: body === undefined ? {} : { "Content-Type": "application/json" },
+        data: body,
+        connectTimeout: 10_000,
+        // The AI plan can take a few minutes.
+        readTimeout: 240_000,
+      });
+    } catch (e) {
+      throw new ApiError(0, `Serverga ulanib bo'lmadi (${server}): ${(e as Error).message}`);
+    }
+    const data = parseBody(res.data);
+    if (res.status >= 400 || res.status === 0) throw new ApiError(res.status, (data as { error?: string } | null)?.error ?? `HTTP ${res.status}`);
+    return data as T;
+  }
+
+  const res = await fetch(server + url, {
     method,
     headers: body === undefined ? undefined : { "Content-Type": "application/json" },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  const text = await res.text();
-  let data: unknown = null;
-  try {
-    data = text ? JSON.parse(text) : null;
-  } catch {
-    /* not JSON */
-  }
+  const data = parseBody(await res.text());
   if (!res.ok) throw new ApiError(res.status, (data as { error?: string } | null)?.error ?? `HTTP ${res.status}`);
   return data as T;
 }

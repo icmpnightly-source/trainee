@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NormativAI</string>
+    <string name="title_activity_main">NormativAI</string>
+    <string name="package_name">uz.normativai.app</string>
+    <string name="custom_url_scheme">uz.normativai.app</string>
+</resources>
