@@ -51,6 +51,14 @@ APK: `web/android/app/build/outputs/apk/debug/app-debug.apk`. Android Studio'da 
 
 Manzilni keyin **Sozlamalar → Server** da o'zgartirish mumkin.
 
+### Kompyuterda sinash (Android Studio emulyatori)
+
+1. Android Studio → **Device Manager** → yangi qurilma (masalan Pixel, Android 14). Turnikni o'zingiz bilan sinash uchun qurilma sozlamalarida **Show Advanced Settings → Camera → Back: Webcam0**.
+2. Emulyatorni ishga tushiring, APK faylini emulyator oynasiga sudrab tashlang (o'rnatiladi).
+3. Server manzili sifatida `10.0.2.2:8080` ni kiriting — emulyator ichidan kompyuterning o'zi shu manzilda ko'rinadi.
+4. GPS: emulyator yon panelidagi **⋯ → Location**: nuqta yoki marshrut (GPX/KML) berib, **Play route** bilan yugurishni sinash mumkin.
+5. Turnik sahifasida emulyatorda **Hisoblash: CPU** ni tanlang (emulyatorda haqiqiy GPU yo'q).
+
 ## Server: tez boshlash
 
 Kerak: **Node.js 22.13+** (SQLite Node'ning o'zida), **Docker** (OSRM uchun).
@@ -65,7 +73,7 @@ cp server/.env.example server/.env
 
 `server/.env` faylida `AI_API_KEY=` qatoriga DeepSeek kalitini yozing. Bu fayl git'ga tushmaydi.
 
-Xarita ma'lumotini tayyorlang (O'zbekiston, Geofabrik'dan; bir marta, bir necha daqiqa) va OSRM'ni ishga tushiring:
+Xarita ma'lumotini tayyorlang (O'zbekiston, Geofabrik'dan; bir marta, bir necha daqiqa) va OSRM'ni ishga tushiring. Windows'da bu buyruqlarni **Git Bash** da, Docker Desktop yoqilgan holda bajaring. OSRM'siz ham ilova ishlaydi, faqat yugurish masofasi xaritada tekshirilmaydi va marshrut tuzilmaydi:
 
 ```bash
 ./osrm/prepare.sh
