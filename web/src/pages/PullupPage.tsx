@@ -4,7 +4,7 @@ import { DrawingUtils } from "@mediapipe/tasks-vision";
 import { type Athlete, post } from "../api";
 import { useApi } from "../hooks";
 import { keepScreenOn } from "../platform";
-import { loadLandmarker, type ModelKind, PoseLandmarker } from "../pose/landmarker";
+import { loadLandmarker, type ModelKind, PoseLandmarker, type Processor, savedProcessor, saveProcessor } from "../pose/landmarker";
 import { PullupCounter, type PullupState } from "../pose/pullup";
 
 type Source = "camera" | "file";
@@ -43,11 +43,13 @@ export function PullupPage() {
   const [source, setSource] = useState<Source>("camera");
   const [facing, setFacing] = useState<"user" | "environment">("environment");
   const [model, setModel] = useState<ModelKind>("lite");
+  const [processor, setProcessor] = useState<Processor>(savedProcessor);
   const [status, setStatus] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
   const [state, setState] = useState<PullupState>(counter.current.state);
   const [fps, setFps] = useState(0);
+  const [msPerFrame, setMsPerFrame] = useState(0);
   const [saved, setSaved] = useState<string | null>(null);
   const [sound, setSound] = useState(true);
   const soundRef = useRef(sound);
@@ -73,7 +75,7 @@ export function PullupPage() {
     const v = video.current!;
     try {
       setStatus("Model yuklanmoqda (lokal)…");
-      const { landmarker, delegate } = await loadLandmarker(model);
+      const { landmarker, delegate } = await loadLandmarker(model, processor);
       if (file) {
         v.srcObject = null;
         v.src = URL.createObjectURL(file);
@@ -111,6 +113,7 @@ export function PullupPage() {
     let frames = 0;
     let fpsAt = performance.now();
     let lastTs = 0;
+    let busy = 0;
 
     const tick = () => {
       if (v.ended) {
@@ -127,7 +130,9 @@ export function PullupPage() {
         // MediaPipe wants strictly increasing timestamps.
         const ts = Math.max(lastTs + 1, performance.now());
         lastTs = ts;
+        const before = performance.now();
         const res = landmarker.detectForVideo(v, ts);
+        busy += performance.now() - before;
         const lm = res.landmarks[0];
         // For a file, time is the video's own clock, so slow processing does not stretch reps.
         const t = v.srcObject ? ts : v.currentTime * 1000;
@@ -157,7 +162,9 @@ export function PullupPage() {
         const now = performance.now();
         if (now - fpsAt > 1000) {
           setFps(Math.round((frames * 1000) / (now - fpsAt)));
+          setMsPerFrame(frames ? Math.round(busy / frames) : 0);
           frames = 0;
+          busy = 0;
           fpsAt = now;
         }
       }
@@ -220,6 +227,19 @@ export function PullupPage() {
           <option value="lite">Model: lite (tez)</option>
           <option value="full">Model: full (aniqroq)</option>
         </select>
+        <select
+          aria-label="Hisoblash qurilmasi"
+          value={processor}
+          disabled={running}
+          onChange={(e) => {
+            const p = e.target.value as Processor;
+            setProcessor(p);
+            saveProcessor(p);
+          }}
+        >
+          <option value="auto">Hisoblash: avto (GPU)</option>
+          <option value="CPU">Hisoblash: CPU</option>
+        </select>
         <label className="check">
           <input type="checkbox" checked={sound} onChange={(e) => setSound(e.target.checked)} /> Ovoz
         </label>
@@ -238,7 +258,15 @@ export function PullupPage() {
         )}
       </div>
 
-      {status && <p className="muted small">{status}{running ? ` · ${fps} kadr/s` : ""}</p>}
+      {status && (
+        <p className="muted small">
+          {status}
+          {running ? ` · ${fps} kadr/s · ${msPerFrame} ms/kadr` : ""}
+        </p>
+      )}
+      {running && fps > 0 && fps < 8 && (
+        <p className="warn-text small">Sekin ishlayapti — to'xtatib, "Hisoblash: {processor === "CPU" ? "avto (GPU)" : "CPU"}" ni sinab ko'ring yoki "lite" modelni tanlang.</p>
+      )}
       {error && <p className="error">{error}</p>}
 
       <div className="pullup">

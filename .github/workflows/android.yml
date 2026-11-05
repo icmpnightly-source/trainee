@@ -83,6 +83,7 @@ jobs:
           target: google_apis
           arch: x86_64
           disable-animations: true
+          ram-size: 4096M
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back emulated -camera-front emulated
           script: bash web/android/smoke/run.sh dist-apk/NormativAI-${{ env.VERSION_NAME }}.apk smoke-out
 

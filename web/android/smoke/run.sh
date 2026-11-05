@@ -10,7 +10,13 @@ ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 PKG=uz.normativai.app
 
 echo "== starting the server"
-(cd "$ROOT/server" && DATA_DIR="$OUT/server-data" nohup node --no-warnings=ExperimentalWarning src/index.mjs < /dev/null > "$OUT/server.log" 2>&1 &)
+cd "$ROOT/server"
+DATA_DIR="$OUT/server-data" node --no-warnings=ExperimentalWarning src/index.mjs < /dev/null > "$OUT/server.log" 2>&1 &
+SERVER=$!
+cd "$ROOT"
+LOGCAT=""
+# Nothing started here may outlive the script (it would keep the CI step open).
+trap 'kill $SERVER $LOGCAT 2>/dev/null || true' EXIT
 for i in $(seq 1 30); do curl -sf http://127.0.0.1:8080/api/health > /dev/null && break; sleep 1; done
 curl -sf http://127.0.0.1:8080/api/health
 
@@ -28,6 +34,5 @@ echo "== driving the app"
 status=0
 OUT="$OUT" timeout 900 node "$ROOT/web/android/smoke/smoke.mjs" < /dev/null || status=$?
 echo "== smoke.mjs exit $status"
-kill "$LOGCAT" || true
-grep -E "Capacitor|chromium|AndroidRuntime|FATAL" "$OUT/logcat.txt" | grep -vE "Capacitor/Console" | tail -40 || true
+grep -E " (E|F)/|AndroidRuntime|FATAL" "$OUT/logcat.txt" | tail -40 || true
 exit $status
