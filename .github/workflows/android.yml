@@ -76,6 +76,7 @@ jobs:
         run: npm ci --prefix web/android/smoke --no-audit --no-fund
 
       - name: Smoke test on an Android 14 emulator
+        timeout-minutes: 30
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34

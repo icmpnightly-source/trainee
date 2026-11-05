@@ -7,6 +7,8 @@ import fs from "node:fs";
 import { _android as android } from "playwright-core";
 
 const OUT = process.env.OUT ?? "smoke-out";
+const t0 = Date.now();
+const log = (...a) => console.log(`[${((Date.now() - t0) / 1000).toFixed(1)}s]`, ...a);
 const PKG = "uz.normativai.app";
 const failures = [];
 const check = (ok, what) => {
@@ -14,12 +16,15 @@ const check = (ok, what) => {
   if (!ok) failures.push(what);
 };
 
+log("looking for the device");
 const [device] = await android.devices();
-console.log("device:", device.model(), device.serial());
+log("device:", device.model(), device.serial());
 await device.shell(`am force-stop ${PKG}`);
 await device.shell(`am start -n ${PKG}/.MainActivity`);
+log("waiting for the app's WebView");
 const webview = await device.webView({ pkg: PKG }, { timeout: 90_000 });
 const page = await webview.page();
+log("connected to", page.url());
 page.setDefaultTimeout(60_000);
 const errors = [];
 page.on("console", (m) => {
@@ -30,6 +35,7 @@ page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
 const shot = async (name) => fs.writeFileSync(`${OUT}/${name}.png`, await device.screenshot());
 
 // 1. First start: the app asks for its server.
+log("step: first start");
 await page.waitForURL(/\/server$/);
 await shot("1-server");
 await page.locator("input").fill("10.0.2.2:8080");
@@ -40,6 +46,7 @@ await shot("2-server-ok");
 await page.getByRole("button", { name: "Davom etish" }).click();
 
 // 2. An athlete and a result.
+log("step: athlete");
 await page.getByRole("button", { name: "+ Sportchi qo'shish" }).click();
 await page.getByLabel("Ism familiya").fill("Sinov Sportchi");
 await page.getByLabel("Tug'ilgan sana").fill("2004-05-01");
@@ -56,6 +63,7 @@ await shot("3-athlete");
 const athleteUrl = page.url();
 
 // 3. Pull-up counter: emulator camera into the pose model running in the app.
+log("step: pull-up");
 await page.getByRole("link", { name: /Turnik/ }).click();
 await page.getByRole("button", { name: "Boshlash", exact: true }).click();
 const status = page.locator("p.muted.small", { hasText: "Model:" });
@@ -69,6 +77,7 @@ await shot("4-pullup");
 await page.getByRole("button", { name: "To'xtatish" }).click();
 
 // 4. Run tracking: positions fed to the emulator's GPS.
+log("step: run");
 await page.goto(athleteUrl);
 await page.getByRole("link", { name: /Yugurish/ }).click();
 const geo = (lat, lon) => execFileSync("adb", ["emu", "geo", "fix", String(lon), String(lat)]);

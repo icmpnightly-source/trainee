@@ -9,21 +9,25 @@ OUT="$(mkdir -p "$2" && cd "$2" && pwd)"
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 PKG=uz.normativai.app
 
-(cd "$ROOT/server" && DATA_DIR="$OUT/server-data" nohup node --no-warnings=ExperimentalWarning src/index.mjs > "$OUT/server.log" 2>&1 &)
+echo "== starting the server"
+(cd "$ROOT/server" && DATA_DIR="$OUT/server-data" nohup node --no-warnings=ExperimentalWarning src/index.mjs < /dev/null > "$OUT/server.log" 2>&1 &)
 for i in $(seq 1 30); do curl -sf http://127.0.0.1:8080/api/health > /dev/null && break; sleep 1; done
 curl -sf http://127.0.0.1:8080/api/health
 
-adb install -r "$APK"
+echo "== installing $APK"
+timeout 300 adb install -r "$APK"
 for p in CAMERA ACCESS_FINE_LOCATION ACCESS_COARSE_LOCATION POST_NOTIFICATIONS; do
   adb shell pm grant "$PKG" "android.permission.$p" || true
 done
 adb shell dumpsys package "$PKG" | grep -E "versionName|granted=true" | head -20
 adb logcat -c
-adb logcat -v time > "$OUT/logcat.txt" 2>&1 &
+adb logcat -v time < /dev/null > "$OUT/logcat.txt" 2>&1 &
 LOGCAT=$!
 
+echo "== driving the app"
 status=0
-OUT="$OUT" node "$ROOT/web/android/smoke/smoke.mjs" || status=$?
+OUT="$OUT" timeout 900 node "$ROOT/web/android/smoke/smoke.mjs" < /dev/null || status=$?
+echo "== smoke.mjs exit $status"
 kill "$LOGCAT" || true
 grep -E "Capacitor|chromium|AndroidRuntime|FATAL" "$OUT/logcat.txt" | grep -vE "Capacitor/Console" | tail -40 || true
 exit $status
