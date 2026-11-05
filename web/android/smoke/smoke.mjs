@@ -32,7 +32,8 @@ page.on("console", (m) => {
   // Capacitor logs every native call; keep the output readable.
   if (["startGroupCollapsed", "endGroup", "dir"].includes(m.type())) return;
   log(`[console.${m.type()}] ${m.text()}`);
-  if (m.type() === "error") errors.push(m.text());
+  // TensorFlow Lite prints its INFO lines on stderr, which arrives as console.error.
+  if (m.type() === "error" && !/^INFO: /.test(m.text())) errors.push(m.text());
 });
 page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
 page.on("crash", () => log("!! the WebView page crashed"));
