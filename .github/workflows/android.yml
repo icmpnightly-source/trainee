@@ -1,6 +1,7 @@
-# Builds the Android app (APK) from web/ with Capacitor.
-# Every push that touches the app uploads the APK as a build artifact;
-# running it by hand with "release" ticked also publishes a GitHub release.
+# Builds the Android app (APK) from web/ with Capacitor and tries it on an
+# Android emulator. Every push that touches the app uploads the APK as a build
+# artifact; running it by hand with "release" ticked also publishes a GitHub
+# release.
 name: Android APK
 
 on:
@@ -8,6 +9,7 @@ on:
     paths:
       - "web/**"
       - "shared/**"
+      - "server/**"
       - ".github/workflows/android.yml"
   workflow_dispatch:
     inputs:
@@ -53,12 +55,42 @@ jobs:
           mkdir -p ../../dist-apk
           cp app/build/outputs/apk/debug/app-debug.apk "../../dist-apk/NormativAI-${VERSION_NAME}.apk"
           ls -la ../../dist-apk
+          unzip -l "../../dist-apk/NormativAI-${VERSION_NAME}.apk" | grep -E "assets/public/(models|mediapipe)/"
 
       - uses: actions/upload-artifact@v4
         with:
           name: NormativAI-${{ env.VERSION_NAME }}-apk
           path: dist-apk/*.apk
           if-no-files-found: error
+
+      # The APK on a real Android (emulator): first start, the server over the
+      # native HTTP client, camera + pose model, GPS. Screenshots and logcat
+      # go into the "smoke" artifact.
+      - name: Enable KVM for the emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Smoke test tools
+        run: npm ci --prefix web/android/smoke --no-audit --no-fund
+
+      - name: Smoke test on an Android 14 emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back emulated -camera-front emulated
+          script: bash web/android/smoke/run.sh dist-apk/NormativAI-${{ env.VERSION_NAME }}.apk smoke-out
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-${{ env.VERSION_NAME }}
+          path: smoke-out/
+          if-no-files-found: ignore
 
       - name: GitHub release
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.release }}

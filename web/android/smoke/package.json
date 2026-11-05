@@ -1,0 +1,9 @@
+{
+  "name": "normativai-android-smoke",
+  "private": true,
+  "type": "module",
+  "description": "Drives the installed Android app's WebView on an emulator (CI smoke test)",
+  "dependencies": {
+    "playwright-core": "1.63.0"
+  }
+}
